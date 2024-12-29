@@ -1,0 +1,18 @@
+datasources:
+  default:
+    db-type: postgres
+    dialect: POSTGRES
+    driver-class-name: org.postgresql.Driver
+flyway:
+  datasources:
+    default:
+      enabled: true
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+micronaut:
+  application:
+    name: justServe
