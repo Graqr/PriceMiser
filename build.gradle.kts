@@ -58,7 +58,7 @@ dependencies {
 }
 
 application {
-    mainClass = "lol.pbu.mock.ApplicationKt"
+    mainClass = "lol.pbu.pricemiser.ApplicationKt"
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("17")
@@ -71,7 +71,7 @@ micronaut {
     testRuntime("spock2")
     processing {
         incremental(true)
-        annotations("lol.pbu.mock.*")
+        annotations("lol.pbu.*")
     }
     aot {
         // Please review carefully the optimizations enabled below
@@ -102,13 +102,14 @@ node {
 }
 
 val buildTaskUsingNpm = tasks.register<NpmTask>("buildNpm") {
-    description = "Run npm build --out-dir ${frontendRootDir}/npm-output"
+    val frontEndBuildDir = File("${project.buildDir}/src/main/frontend")
+    description = "Run npm build --out-dir ${frontEndBuildDir}/"
     group = "lol.pbu.pricemiser"
     dependsOn(tasks.npmInstall)
     npmCommand.set(listOf("run", "build"))
-    args.set(listOf("--", "--out-dir", "${frontendRootDir}/npm-output"))
+    args.set(listOf("--", "--out-dir", "${frontEndBuildDir}/"))
     inputs.dir("src")
-    outputs.dir("${frontendRootDir}/npm-output")
+    outputs.dir("${frontEndBuildDir}/")
 }
 
 
