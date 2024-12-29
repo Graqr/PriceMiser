@@ -1,20 +1,26 @@
+import com.github.gradle.node.npm.proxy.ProxySettings
+import com.github.gradle.node.npm.task.NpmTask
+
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.9.25"
     id("org.jetbrains.kotlin.plugin.allopen") version "1.9.25"
     id("org.jetbrains.kotlin.plugin.jpa") version "1.9.25"
     id("com.google.devtools.ksp") version "1.9.25-1.0.20"
-    id("groovy") 
+    id("groovy")
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.4.4"
     id("com.google.cloud.tools.jib") version "2.8.0"
     id("io.micronaut.test-resources") version "4.4.4"
     id("io.micronaut.aot") version "4.4.4"
+    id("com.github.node-gradle.node") version "7.0.2"
 }
 
 version = "0.0.1"
-group = "lol.pbu.pricemiser.frontend"
+group = "lol.pbu.pricemiser"
 
-val kotlinVersion= project.properties["kotlinVersion"]
+val kotlinVersion = project.properties["kotlinVersion"]
+val frontendRootDir = File("${project.projectDir}/src/main/frontend")
+
 repositories {
     mavenCentral()
 }
@@ -51,7 +57,6 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers")
 }
 
-
 application {
     mainClass = "lol.pbu.mock.ApplicationKt"
 }
@@ -59,14 +64,6 @@ java {
     sourceCompatibility = JavaVersion.toVersion("17")
 }
 
-
-tasks {
-    jib {
-        to {
-            image = "gcr.io/myapp/jib-image"
-        }
-    }
-}
 graalvmNative.toolchainDetection = false
 
 micronaut {
@@ -89,6 +86,31 @@ micronaut {
         replaceLogbackXml = true
     }
 }
+
+// front end crud
+
+node {
+    version.set("18.17.1")
+    npmVersion.set((project.properties["npmVersion"] as String))
+    npmInstallCommand.set("install")
+    distBaseUrl.set("https://nodejs.org/dist")
+    download.set(false)
+    workDir.set(file("${frontendRootDir}/.cache/nodejs"))
+    npmWorkDir.set(file("${frontendRootDir}/.cache/npm"))
+    nodeProjectDir.set(file(frontendRootDir))
+    nodeProxySettings.set(ProxySettings.SMART)
+}
+
+val buildTaskUsingNpm = tasks.register<NpmTask>("buildNpm") {
+    description = "Run npm build --out-dir ${frontendRootDir}/npm-output"
+    group = "lol.pbu.pricemiser"
+    dependsOn(tasks.npmInstall)
+    npmCommand.set(listOf("run", "build"))
+    args.set(listOf("--", "--out-dir", "${frontendRootDir}/npm-output"))
+    inputs.dir("src")
+    outputs.dir("${frontendRootDir}/npm-output")
+}
+
 
 
 
