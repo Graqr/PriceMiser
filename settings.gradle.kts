@@ -1,4 +1,2 @@
-
-
-rootProject.name="JustServe"
+rootProject.name="Price Miser"
 
