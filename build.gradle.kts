@@ -12,7 +12,7 @@ plugins {
 }
 
 version = "0.0.1"
-group = "lol.pbu.justserve"
+group = "lol.pbu.pricemiser.frontend"
 
 val kotlinVersion= project.properties["kotlinVersion"]
 repositories {
