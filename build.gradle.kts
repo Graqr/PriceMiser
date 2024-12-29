@@ -35,20 +35,20 @@ dependencies {
     implementation("io.micronaut.views:micronaut-views-thymeleaf")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
-    implementation("io.micronaut.views:micronaut-views-jstachio")
+    implementation("io.micronaut.views:micronaut-views-thymeleaf")
     implementation("io.micronaut.views:micronaut-views-htmx")
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
     runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("org.yaml:snakeyaml")
     testImplementation("com.amazonaws:aws-java-sdk-core")
     testImplementation("io.micronaut:micronaut-http-client")
     testImplementation("org.testcontainers:localstack")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:spock")
     testImplementation("org.testcontainers:testcontainers")
-    annotationProcessor("io.jstach:jstachio-apt")
 }
 
 
